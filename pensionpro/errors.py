@@ -1,0 +1,2 @@
+class PensionProError(Exception):
+    pass

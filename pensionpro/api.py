@@ -1,5 +1,6 @@
 import requests
 from pensionpro.models import Contact, Plan, PlanContactRole
+from pensionpro.errors import PensionProError
 
 class ContactAPI(object):
     def __init__(self, api):
@@ -35,7 +36,11 @@ class PlanContactRoleAPI(object):
 
     def list_plan_contact_roles(self, search_filter=''):
         """Returns a list of all plan contact roles that match the filter"""
-        url = f'plancontactroles?$filter=' + search_filter
+        if search_filter == '':
+            url = f'plancontactroles'
+        else:
+            url = f'plancontactroles?$filter=' + search_filter
+        response = self._api._get(url)
         response = self._api._get(url)
 
         plan_contact_roles = []
@@ -64,8 +69,10 @@ class API(object):
     def _get(self, url, params={}):
         """Wrapper around request.get() to use API prefix. Returns the JSON response."""
         response = self._session.get(self._api_prefix + url)
-        # print(self._session.headers)
-        # print(response)
-        # print(response.headers)
-        print(response.url)
-        return response.json()
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(response.raw)
+            print(response.headers)
+            raise PensionProError
