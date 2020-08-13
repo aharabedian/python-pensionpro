@@ -65,14 +65,45 @@ class API(object):
         self.contacts = ContactAPI(self)
         self.plans = PlanAPI(self)
         self.plan_contact_roles = PlanContactRoleAPI(self)
+    
+    def _action(self, r):
+        try:
+            j = r.json()
+        except ValueError:
+            j = {}
+        
+        error_message = 'PensionPro Request Failed'
+        if "errors" in j:
+            error_message = f'{j.get("description")}: {j.get("errors")}'
+        elif "message" in j:
+            error_message = j["message"]
+
+        if r.status_code == 400:
+            raise PensionProBadRequest(error_message)
+        elif r.status_code == 401:
+            raise PensionProUnauthorized(error_message)
+        elif r.status_code == 403:
+            raise PensionProAccessDenied(error_message)
+        elif r.status_code == 404:
+            raise PensionProNotFound(error_message)
+        elif r.status_code == 429:
+            raise PensionProRateLimited(
+                f'429 Rate Limit Exceeded: API rate-limit has been reached untill {r.headers.get("Retry-After")} seconds.'
+            )
+        elif 500 < r.status_code < 600:
+            raise PensionProServerError(f'{r.status_code}: Server Error')
+        
+        # Catch other errors
+        try:
+            r.raise_for_status()
+        except HTTPError as e:
+            raise PensionProError(f'{e}: {j}')
+
+        print(j)
+        # Return json object
+        return j
 
     def _get(self, url, params={}):
         """Wrapper around request.get() to use API prefix. Returns the JSON response."""
-        response = self._session.get(self._api_prefix + url)
-
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(response.raw)
-            print(response.headers)
-            raise PensionProError
+        request = self._session.get(self._api_prefix + url, params=params)
+        return self._action(request)

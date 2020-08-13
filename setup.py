@@ -5,7 +5,7 @@ with open("README.md", "r") as readme:
 
 setuptools.setup(
     name='python-pensionpro',
-    version='0.2',
+    version='0.3',
     license='MIT',
     author="Aaron Harabedian",
     author_email="aaronharabedian@gmail.com",
