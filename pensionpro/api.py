@@ -88,7 +88,7 @@ class API(object):
             raise PensionProNotFound(error_message)
         elif r.status_code == 429:
             raise PensionProRateLimited(
-                f'429 Rate Limit Exceeded: API rate-limit has been reached untill {r.headers.get("Retry-After")} seconds.'
+                f'429 Rate Limit Exceeded: API rate-limit has been reached untill {r.headers.get("x-retry-after-seconds")} seconds.'
             )
         elif 500 < r.status_code < 600:
             raise PensionProServerError(f'{r.status_code}: Server Error')
