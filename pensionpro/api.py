@@ -99,7 +99,6 @@ class API(object):
         except HTTPError as e:
             raise PensionProError(f'{e}: {j}')
 
-        print(j)
         # Return json object
         return j
 
