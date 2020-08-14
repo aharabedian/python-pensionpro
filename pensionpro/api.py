@@ -1,6 +1,6 @@
 import requests
 from pensionpro.models import Contact, Plan, PlanContactRole
-from pensionpro.errors import PensionProError
+from pensionpro.errors import *
 
 class ContactAPI(object):
     def __init__(self, api):

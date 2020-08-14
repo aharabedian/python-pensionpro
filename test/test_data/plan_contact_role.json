@@ -1,0 +1,19 @@
+{
+    "ShouldCC": false,
+    "ShouldBCC": false,
+    "ShowOnWeb": false,
+    "ShowOnHelpScreen": false,
+    "PlanId": 309563,
+    "ContactId": 1030297,
+    "Contact": null,
+    "RoleTypeId": 453575,
+    "RoleType": null,
+    "DataKey": "68808e8723c3dfc9b341ea84c48bba947dda4397",
+    "Id": 1577995,
+    "HasBeenWarned": false,
+    "CreatedOn": "2020-07-13T19:35:51Z",
+    "UpdatedOn": "2020-07-13T19:35:51Z",
+    "CreatedByContact": null,
+    "UpdatedByContact": null,
+    "IsDeactivated": false
+  }
