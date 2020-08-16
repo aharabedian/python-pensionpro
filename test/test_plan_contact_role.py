@@ -6,7 +6,7 @@ api_key = '3TEXEP7JxsrZwhZNQU4z350Z'
 
 pensionpro = PensionProAPI(username, api_key)
 
-with open('test_data/plan_contact_role.json') as json_file:
+with open('test/test_data/plan_contact_role.json') as json_file:
     test_plan_contact_role = json.load(json_file)
 
 def test_get_plan_contact_role():
