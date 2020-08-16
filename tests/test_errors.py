@@ -1,12 +1,11 @@
 from pensionpro.api import API as PensionProAPI
 from pensionpro.errors import *
-import json
 import pytest
+from dotenv import load_dotenv
+import json, os
 
-username = 'aharabedian@maxusplans.com35644'
-api_key = '3TEXEP7JxsrZwhZNQU4z350Z'
-
-pensionpro = PensionProAPI(username, api_key)
+load_dotenv()
+pensionpro = PensionProAPI(os.getenv('USERNAME'), os.getenv('API_KEY'))
 unauthorized_pensionpro = PensionProAPI('FAKE','123')
 
 def test_bad_request():
