@@ -5,7 +5,7 @@ with open("README.md", "r") as readme:
 
 setuptools.setup(
     name='python-pensionpro',
-    version='0.4',
+    version='0.5',
     license='MIT',
     author="Aaron Harabedian",
     description="Python library for interacting with PensionPro API.",
