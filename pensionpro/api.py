@@ -1,47 +1,42 @@
 import requests
-from pensionpro.models import Contact, Plan, PlanContactRole
 from pensionpro.errors import *
 
 class ContactAPI(object):
     def __init__(self, api):
         self._api = api
     
-    def get_contact(self, contact_id):
+    def get_contact(self, contact_id, expand_string=""):
         """Fetches the contact for the given contact ID"""
         url = f'contacts/{contact_id}'
-        contact = self._api._get(url)
-        return Contact(**contact)
+        contact = self._api._get(url, expand_string=expand_string)
+        return contact
 
 class PlanAPI(object):
     def __init__(self, api):
         self._api = api
 
-    def get_plan(self, plan_id):
+    def get_plan(self, plan_id, expand_string=""):
         """Fetches the plan for the given plan ID"""
         url = f'plans/{plan_id}'
-        plan = self._api._get(url)
-        return Plan(**plan)
+        plan = self._api._get(url, expand_string=expand_string)
+        return plan
 
 class PlanContactRoleAPI(object):
     def __init__(self, api):
         self._api = api
     
-    def get_plan_contact_role(self, plan_contact_role_id):
+    def get_plan_contact_role(self, plan_contact_role_id, expand_string=""):
         """Fetches the plan contact role for the given plan contact role ID
             NOTE: A PlanContactRole is the association between a plan and a contact. This is NOT the role type!
         """
         url = f'plancontactroles/{plan_contact_role_id}'
-        plan_contact_role = self._api._get(url)
-        return PlanContactRole(**plan_contact_role)
+        plan_contact_role = self._api._get(url, expand_string="")
+        return plan_contact_role
 
-    def list_plan_contact_roles(self, search_filter=''):
+    def list_plan_contact_roles(self, filter_string="", expand_string=""):
         """Returns a list of all plan contact roles that match the filter"""
-        if search_filter == '':
-            url = f'plancontactroles'
-        else:
-            url = f'plancontactroles?$filter=' + search_filter
-        response = self._api._get(url)
-        response = self._api._get(url)
+        url = f'plancontactroles'
+        response = self._api._get(url, filter_string=filter_string, expand_string=expand_string)
 
         plan_contact_roles = []
 
@@ -102,7 +97,18 @@ class API(object):
         # Return json object
         return j
 
-    def _get(self, url, params={}):
+    def _get(self, url, filter_string="", expand_string=""):
         """Wrapper around request.get() to use API prefix. Returns the JSON response."""
-        request = self._session.get(self._api_prefix + url, params=params)
+        complete_url = f'{self._api_prefix}{url}'
+        if (filter_string == "") and (expand_string == ""):
+            pass
+        elif filter_string == "":
+            complete_url = f'{complete_url}?$expand={expand_string}'
+        elif expand_string == "":
+            complete_url = f'{complete_url}?$filter={filter_string}'
+        else:
+            complete_url = f'{complete_url}?$filter={filter_string}&$expand={expand_string}'
+
+        print(complete_url)
+        request = self._session.get(complete_url)
         return self._action(request)

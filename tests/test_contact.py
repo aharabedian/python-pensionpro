@@ -10,4 +10,4 @@ with open('tests/test_data/contact.json') as json_file:
 
 def test_get_contact():
     contact = pensionpro.contacts.get_contact(1030562)
-    assert contact.__dict__ == test_contact
+    assert contact == test_contact

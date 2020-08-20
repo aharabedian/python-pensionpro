@@ -10,4 +10,4 @@ with open('tests/test_data/plan.json') as json_file:
 
 def test_get_plan():
     plan = pensionpro.plans.get_plan(309388)
-    assert plan.__dict__ == test_plan
+    assert plan == test_plan
