@@ -11,3 +11,7 @@ with open('tests/test_data/plan.json') as json_file:
 def test_get_plan():
     plan = pensionpro.plans.get_plan(309388)
     assert plan == test_plan
+
+def test_list_plans():
+    plans = pensionpro.plans.list_plans(top=100)
+    assert len(plans) == 350

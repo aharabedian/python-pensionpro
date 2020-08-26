@@ -20,6 +20,28 @@ class PlanAPI(object):
         url = f'plans/{plan_id}'
         plan = self._api._get(url, **kwargs)
         return plan
+    
+    def list_plans(self, **kwargs):
+        """Returns a list of all plan contact roles that match the filter"""
+        url = f'plans'
+
+        if 'skip' not in kwargs:
+            kwargs['skip'] = 0
+
+        if 'top' not in kwargs:
+            kwargs['top'] = 1000
+
+        plans = []
+        has_next_page = True
+
+        while has_next_page:
+            print(kwargs['skip'])
+            this_page = self._api._get(url, **kwargs)
+            plans += this_page["Values"]
+            has_next_page = this_page["HasNextPage"]
+            kwargs['skip'] += kwargs['top']
+        
+        return plans
 
 class PlanContactRoleAPI(object):
     def __init__(self, api):
