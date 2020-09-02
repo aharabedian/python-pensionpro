@@ -35,7 +35,6 @@ class PlanAPI(object):
         has_next_page = True
 
         while has_next_page:
-            print(kwargs['skip'])
             this_page = self._api._get(url, **kwargs)
             plans += this_page["Values"]
             has_next_page = this_page["HasNextPage"]
@@ -69,7 +68,6 @@ class PlanContactRoleAPI(object):
         has_next_page = True
 
         while has_next_page:
-            print(kwargs['skip'])
             this_page = self._api._get(url, **kwargs)
             plan_contact_roles += this_page["Values"]
             has_next_page = this_page["HasNextPage"]
@@ -139,6 +137,5 @@ class API(object):
 
         complete_url = f'{self._api_prefix}{url}?{args}'
 
-        print(complete_url)
         request = self._session.get(complete_url)
         return self._action(request)
